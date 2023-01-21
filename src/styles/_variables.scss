@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Yellowtail&display=swap');
+
+// Colors
+$background-color: rgb(255, 255, 255);
+$background-accent-color: rgb(221, 123, 11);
+$primary-color: rgb(47, 72, 88);
+$accent-color: rgb(175, 72, 117);
+$brand-color: rgb(68, 80, 119);
+$error-color: rgb(208, 79, 77);
+
+// Fonts
+$primary-font: 400 1.1rem 'Montserrat', sans-serif;
+$brand-font: 400 4rem 'Yellowtail', cursive;
+$nav-font: 400 1.6rem 'Roboto Slab', serif;
+$major-heading-font: 500 1.8rem 'Montserrat', sans-serif;
+$smalltext-font: 300 0.5rem 'Montserrat', sans-serif;
