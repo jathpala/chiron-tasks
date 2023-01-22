@@ -8,6 +8,8 @@
   import { auth, db } from "$lib/firebase"
   import { user } from "$stores/user"
 
+  import Loader from "$components/Loader.svelte"
+
   onMount(async () => {
     onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
@@ -63,7 +65,7 @@
   </main>
 {:else}
   <section class="loading">
-    <h1>Loading...</h1>
+    <Loader fontSize="2rem" dotSize="0.5rem">Loading...</Loader>
   </section>
 {/if}
 

@@ -3,17 +3,23 @@
   import { goto } from "$app/navigation"
   import { signInWithEmailAndPassword } from "firebase/auth"
 
+  import Loader from "$components/Loader.svelte"
+
   let email
   let password
   let error
 
+  let loading = false
+
   // const auth = firebase.auth
   async function login() {
     error = null
+    loading = true
     try {
       await signInWithEmailAndPassword(auth, email, password)
       goto("/tasks")
     } catch (err) {
+      loading = false
       if (["auth/user-not-found", "auth/wrong-password"].some(
         substr => err.message.includes(substr)
       )) {
@@ -31,29 +37,34 @@
 </script>
 
 <section>
-  <main>
-    <h1>Chiron Tasks</h1>
-    <form>
-      {#if error}
-      <span class="flash">{error}</span>
-      {/if}
-      <label for="email">Email</label>
-      <input id="email" type="email" name="username" bind:value={email} required/>
-      <label for="password">Password</label>
-      <input
-        id="password"
-        type="password"
-        name="password"
-        bind:value={password}
-        required
-      />
-      <button
-        type="submit"
-        on:click|preventDefault={login}>
-        Sign In
-      </button>
-    </form>
-  </main>
+
+  {#if loading}
+    <Loader fontSize="2rem" dotSize="0.5rem">Signing In...</Loader>
+  {:else}
+    <main>
+      <h1>Chiron Tasks</h1>
+      <form>
+        {#if error}
+        <span class="flash">{error}</span>
+        {/if}
+        <label for="email">Email</label>
+        <input id="email" type="email" name="username" bind:value={email} required/>
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          bind:value={password}
+          required
+        />
+        <button
+          type="submit"
+          on:click|preventDefault={login}>
+          Sign In
+        </button>
+      </form>
+    </main>
+  {/if}
 </section>
 
 <style lang="scss">
