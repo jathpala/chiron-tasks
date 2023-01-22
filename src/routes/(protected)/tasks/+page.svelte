@@ -1,13 +1,16 @@
 <script>
   import { onMount } from "svelte"
+  import { flip } from "svelte/animate"
+  import { fade } from "svelte/transition"
 
-  import { collection, doc, query, getDoc, getDocs, addDoc, where } from "firebase/firestore"
+  import { collection, doc, query, getDoc, getDocs, addDoc, deleteDoc, where } from "firebase/firestore"
 
   import TodoItem from "$components/TodoItem.svelte"
   import { db } from "$lib/firebase"
   import { user } from "$stores/user"
 
   let todos = []
+  let unique = {}
 
   async function readAll() {
     try {
@@ -17,8 +20,8 @@
         let todo = d.data()
         todo.id = d.id
         todos.push(todo)
+        todos = todos
       })
-      todos = todos
     } catch (err) {
       console.log(err)
     }
@@ -33,6 +36,17 @@
       todo.id = d.id
       todos.unshift(todo)
       todos = todos
+      unique = {}
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  async function deleteTodo(event) {
+    try {
+      await deleteDoc(doc(db, "tasks", event.detail))
+      console.log("Document deleted with ID: ", event.detail)
+      todos = todos.filter((todo) => todo.id != event.detail)
     } catch (err) {
       console.error(err)
     }
@@ -44,16 +58,21 @@
 </script>
 
 <main>
-  <TodoItem on:addTodo={addTodo}/>
+  {#key unique}
+    <TodoItem on:addTodo={addTodo} />
+  {/key}
   {#each todos as todo (todo.id)}
-    <TodoItem
-      ref={todo.id}
-      name={todo.name}
-      mrn={todo.mrn}
-      dob={todo.dob}
-      summary={todo.summary}
-      details={todo.details}
-    />
+    <div transition:fade={{duration: 500}} animate:flip={{duration: 500}}>
+      <TodoItem
+        ref={todo.id}
+        name={todo.name}
+        mrn={todo.mrn}
+        dob={todo.dob}
+        summary={todo.summary}
+        details={todo.details}
+        on:deleteTodo={deleteTodo}
+      />
+    </div>
   {/each}
 </main>
 

@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher } from "svelte"
 
-  import { doc, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore"
+  import { doc, updateDoc, serverTimestamp } from "firebase/firestore"
 
   import TextInput from "$components/TextInput.svelte"
   import DateInput from "$components/DateInput.svelte"
@@ -37,6 +37,7 @@
     mrn = ""
     summary = ""
     details = ""
+    todo = todo
   }
 
   async function updateTodo() {
@@ -55,13 +56,7 @@
   }
 
   async function deleteTodo() {
-    try {
-      await deleteDoc(doc(db, "tasks", ref))
-      console.log("Document deleted with ID: ", ref)
-      todo.parentNode.removeChild(todo)
-    } catch (err) {
-      console.error(err)
-    }
+    dispatch("deleteTodo", ref)
   }
 </script>
 
