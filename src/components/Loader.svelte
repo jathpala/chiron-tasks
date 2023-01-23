@@ -8,7 +8,7 @@ export let topOffset = "1.5em"
 
 <div style:font-size={fontSize}>
   <slot />
-  <span class="loader" style:font-size={dotSize} style:top={"-" + topOffset}></span>
+  <span style:font-size={dotSize} style:top={"-" + topOffset}></span>
 </div>
 
 <style lang="scss">

@@ -45,18 +45,21 @@
       <h1>Chiron Tasks</h1>
       <form>
         {#if error}
-        <span class="flash">{error}</span>
+          <span class="flash">{error}</span>
         {/if}
-        <label for="email">Email</label>
-        <input id="email" type="email" name="username" bind:value={email} required/>
-        <label for="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          name="password"
-          bind:value={password}
-          required
-        />
+        <fieldset>
+          <label for="email">Email</label>
+          <input id="email" type="email" name="username" bind:value={email} size="1" required/>
+          <label for="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            bind:value={password}
+            size="1"
+            required
+          />
+        </fieldset>
         <button
           type="submit"
           on:click|preventDefault={login}>
@@ -73,60 +76,95 @@
 section {
   height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 
   main {
     display: flex;
     flex-direction: column;
-    row-gap: 1rem;
-    padding: 2rem;
-    border-style: solid;
-    border-width: 4px;
-    border-color: $accent-color;
-    border-radius: 1rem;
-    outline-style: solid;
-    outline-color: $background-color;
-    outline-width: 0.5rem;
-    box-shadow: 0 0 24px 12px rgba(0, 0, 0, 0.5);
+    row-gap: 1.5rem;
+    width: 100%;
+    padding: 1rem;
 
     h1 {
       font: $brand-font;
       color: $brand-color;
       text-align: center;
+      text-decoration: underline;
+      text-decoration-color: $accent-color;
     }
 
     form {
       display: flex;
       flex-direction: column;
+      align-items: center;
+      row-gap: 1.5rem;
 
-      label {
-        font-size: 1.6rem;
-        margin-bottom: 0.2rem;
+      fieldset {
+        border: none;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0;
+        width: 100%;
+        min-width: 5em;
+        max-width: 20em;
 
-        &:after {
-          content: ":";
+        label {
+          font-size: 1.6rem;
+          margin-bottom: 0.2rem;
+
+          &:after {
+            content: ":";
+          }
         }
-      }
 
-      input {
-        font: $primary-font;
-        color: $primary-color;
-        font-size: 1.4rem;
-        margin-bottom: 1.4rem;
-        height: 2em;
-        margin-left: 0.2rem;
-        margin-right: 0.2rem;
-        width: 20rem;
+        input {
+          font: $primary-font;
+          color: $primary-color;
+          font-size: 1.4rem;
+          margin-bottom: 1.4rem;
+          height: 2em;
+          margin-left: 0.2rem;
+          margin-right: 0.2rem;
+          border-style: solid;
+          border-width: 1px;
+          border-color: $accent-color;
+          border-radius: 0.25em;
+          width: auto;
+
+          &:focus {
+            outline-style: solid;
+            outline-width: 2px;
+            outline-color: $background-accent-color;
+            border-color: transparent;
+          }
+        }
       }
 
       button {
         font: $primary-font;
         font-size: 1.4rem;
-        margin-top: 1rem;
-        padding: 0.2rem;
         width: fit-content;
         align-self: center;
+        font-weight: 800;
+        padding-top: 0.3em;
+        padding-bottom: 0.3em;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+        background-color: $background-color;
+        color: $accent-color;
+        border-width: 2px;
+        border-style: solid;
+        border-color: $accent-color;
+        border-radius: 0.3em;
+
+        &:hover, &:active, &:focus {
+          outline: none;
+          cursor: pointer;
+          background-color: $accent-color;
+          color: $background-color;
+        }
       }
 
       span.flash {
@@ -137,5 +175,43 @@ section {
       }
     }
   }
+}
+
+@media screen and (min-width: 768px) {
+  section {
+    align-items: center;
+
+    main {
+      padding: 2rem;
+      row-gap: 1rem;
+      text-decoration: none;
+      border-style: solid;
+      border-width: 4px;
+      border-color: $accent-color;
+      border-radius: 1rem;
+      outline-style: solid;
+      outline-color: $background-color;
+      outline-width: 0.5rem;
+      box-shadow: 0 0 24px 12px rgba(0, 0, 0, 0.5);
+      min-width: 20em;
+      max-width: 30em;
+      width: 50%;
+
+      h1 {
+        text-decoration: none;
+      }
+
+      form {
+
+        fieldset{
+          max-width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+
 }
 </style>

@@ -8,8 +8,12 @@
   import { auth, db } from "$lib/firebase"
   import { user } from "$stores/user"
 
-  import Loader from "$components/Loader.svelte"
+  import { MenuIcon, XIcon, SettingsIcon } from "svelte-feather-icons"
 
+  import Loader from "$components/Loader.svelte"
+  import Drawer from "$components/Drawer.svelte"
+
+  let drawerOpen = false
   onMount(async () => {
     onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
@@ -50,16 +54,29 @@
   <header>
     <h1>Chiron Tasks</h1>
     <nav>
-      <ul>
-        <li><a href="/tasks">Tasks</a></li>
+      <ul class="primary">
+        <li><a href="/tasks">All Tasks</a></li>
+      </ul>
+      <ul class="secondary">
+        <li><a href="/logout" on:click|preventDefault={logout}>Sign Out</a></li>
+        <li><a href="/settings" class="icon"><SettingsIcon /></a></li>
       </ul>
     </nav>
+    <button class="menu" on:click={() => drawerOpen = true}><MenuIcon size="2.5x" /></button>
+  </header>
+  <Drawer open={drawerOpen} size="50%" placement="right" on:clickAway={() => drawerOpen = false}>
     <nav>
-      <ul>
+      <button class="menu" on:click={() => drawerOpen = false}><XIcon size="3x" /></button>
+      <ul class="primary">
+        <li><a href="/tasks">All Tasks</a></li>
+        <li><a href="/settings/add-location">+ Add Location</a></li>
+      </ul>
+      <ul class="secondary">
+        <li><a href="/settings">Settings</a></li>
         <li><a href="/logout" on:click|preventDefault={logout}>Sign Out</a></li>
       </ul>
     </nav>
-  </header>
+  </Drawer>
   <main>
     <slot />
   </main>
@@ -80,36 +97,46 @@ header {
   padding-left: 1rem;
   padding-right: 1rem;
   align-items: center;
-  column-gap: 3rem;
+  justify-content: space-between;
   box-shadow: 0 2px 16px 4px rgba(0, 0, 0, 0.5);
 
   h1 {
     font: $brand-font;
     color: $brand-color;
-    font-size: 2.5rem;
+    font-size: 1.5rem;
   }
 
   nav {
+    display: none;
+    flex-grow: 1;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    margin-left: 2rem;
+
     ul {
-      list-style-type: none;
-      padding: 0;
-      font: $nav-font;
-      display: flex;
       align-items: center;
+      font-size: 1.6rem;
+      column-gap: 1rem;
+      flex-direction: row;
+      margin-bottom: 0;
 
-      a {
-        color: $background-color;
-        text-underline-offset: 0.4em;
-      }
-    }
+      &.secondary {
+        font-size: 1.3rem;
 
-    &:first-of-type {
-      flex-grow: 1;
-    }
+        a {
+          display: flex;
+          padding: 0.3rem;
 
-    &:last-of-type {
-      ul {
-        font-size: 1.2rem;
+          &.icon:hover {
+            border-radius: 50%;
+            background-color: $accent-color;
+            color: $background-accent-color;
+          }
+        }
       }
     }
   }
@@ -120,6 +147,39 @@ main {
   padding-bottom: 2rem;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  row-gap: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  button.menu {
+    align-self: flex-end;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    font: $nav-font;
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 2rem;
+    align-items: stretch;
+
+    a {
+      color: $nav-color;
+      text-underline-offset: 0.2em;
+    }
+  }
 }
 
 section.loading {
@@ -133,4 +193,36 @@ section.loading {
     color: $accent-color;
   }
 }
+
+button.menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  background-color: transparent;
+  border-style: none;
+  cursor: pointer;
+  color: $accent-color;
+}
+
+@media screen and (min-width: 768px) {
+  header {
+    h1 {
+      font-size: 2.5rem;
+    }
+
+    nav {
+      display: flex;
+    }
+
+    button.menu {
+      display: none;
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  // TODO: Fully lay out options as a side panel
+}
+
 </style>
