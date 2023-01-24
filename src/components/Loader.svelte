@@ -1,9 +1,37 @@
+<!--
+Component: Full Screen Loading Page
+
+Displays a loading message when needed
+
+Attributes:
+  fontSize   - CSS font size value
+  dotSize    - Size of the loading indicator dots
+  topOffset  - How much to bring the dots up todays the loading message
+
+Slots:
+  (default)  - The loading message to display
+
+Copyright (C) 2023 Jath Palasubramaniam
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+
 <script>
-
-export let fontSize = "2rem"
-export let dotSize = "1rem"
-export let topOffset = "1.5em"
-
+  export let fontSize = "2rem"
+  export let dotSize = "1rem"
+  export let topOffset = "1.5em"
 </script>
 
 <div style:font-size={fontSize}>

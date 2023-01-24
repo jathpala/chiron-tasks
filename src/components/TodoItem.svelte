@@ -1,13 +1,49 @@
+<!--
+Component: Todo
+
+A single task. If a ref is provided it will show an existing task with options
+to update and delete. If not task is provided then it will be styles as a form
+to add a new task.
+
+Attributes:
+  ref      - Document reference for an existing task (or null)
+  name     - Patient name
+  dob      - DOB specied as an object with separate day, month and year
+  mrn      - Medical record identifier (doesn't have to be a number)
+  summary  - A one line summary of the task
+  details  - Details for the task
+
+Events:
+  addTodo     - Create a new todo
+  updateTodo  - Modify this todo
+  deleteTodo  - Delete this todo
+
+Copyright (C) 2023 Jath Palasubramaniam
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+
 <script>
   import { createEventDispatcher } from "svelte"
 
-  import { doc, updateDoc, serverTimestamp } from "firebase/firestore"
+  import { serverTimestamp } from "firebase/firestore"
 
   import TextInput from "$components/TextInput.svelte"
   import DateInput from "$components/DateInput.svelte"
   import TextAreaInput from "$components/TextAreaInput.svelte"
 
-  import { db } from "$lib/firebase"
   import { user } from "$stores/user"
 
   export let ref = null
