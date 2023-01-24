@@ -6,7 +6,6 @@
   import { collection, doc, query, getDoc, getDocs, addDoc, deleteDoc, where } from "firebase/firestore"
 
   import TodoItem from "$components/TodoItem.svelte"
-  import TextInput from "$components/TextInput.svelte"
   import { db } from "$lib/firebase"
   import { user } from "$stores/user"
 

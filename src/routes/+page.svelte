@@ -136,7 +136,7 @@ section {
           &:focus {
             outline-style: solid;
             outline-width: 2px;
-            outline-color: $background-accent-color;
+            outline-color: $accent-color;
             border-color: transparent;
           }
         }

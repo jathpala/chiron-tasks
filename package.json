@@ -10,7 +10,7 @@
 		"lint": "eslint .",
 		"emulators": "firebase emulators:start --import=firebase/local",
 		"emulators:export": "firebase emulators:export firebase/local",
-		"clean": "rm firestore-debug.log ui-debug.log"
+		"clean": "rm -rf build/ firebase-debug.log firestore-debug.log ui-debug.log"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^1.0.0",
