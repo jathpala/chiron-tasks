@@ -10,13 +10,23 @@ service cloud.firestore {
       allow create:    if request.auth != null &&
                           exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
                           get(/databases/$(database)/documents/users/$(request.auth.uid)).data.authorised == true &&
-                          request.auth.uid == request.resource.data.user;
+                          request.auth.uid == request.resource.data.user &&
+                          request.resource.data.summary.trim() != "" &&
+                          (
+                            request.resource.data.name.trim() != "" ||
+                            request.resource.data.mrn.trim() != ""
+                          );
 
       allow update:    if request.auth != null &&
                           exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
                           get(/databases/$(database)/documents/users/$(request.auth.uid)).data.authorised == true &&
                           request.auth.uid == resource.data.user &&
-                          request.resource.data.user == resource.data.user;
+                          request.resource.data.user == resource.data.user &&
+                          request.resource.data.summary.trim() != "" &&
+                          (
+                            request.resource.data.name.trim() != "" ||
+                            request.resource.data.mrn.trim() != ""
+                          );
 
       allow delete:    if request.auth != null &&
                           exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&

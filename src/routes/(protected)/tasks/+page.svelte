@@ -3,7 +3,7 @@
   import { flip } from "svelte/animate"
   import { fade } from "svelte/transition"
 
-  import { collection, doc, query, getDoc, getDocs, addDoc, deleteDoc, where } from "firebase/firestore"
+  import { collection, doc, query, getDoc, getDocs, addDoc, updateDoc, deleteDoc, where } from "firebase/firestore"
 
   import TodoItem from "$components/TodoItem.svelte"
   import { db } from "$lib/firebase"
@@ -42,6 +42,22 @@
     }
   }
 
+  async function updateTodo(event) {
+    const ref = event.detail.ref
+    delete event.detail.ref
+    try {
+      await updateDoc(doc(db, "tasks", ref), event.detail)
+      const index = todos.findIndex((todo) => todo.id == ref)
+      todos[index] = event.detail
+      todos[index].id = ref
+      todos = todos
+
+      console.log("Document updated with ID: ", ref)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   async function deleteTodo(event) {
     try {
       await deleteDoc(doc(db, "tasks", event.detail))
@@ -71,6 +87,7 @@
         summary={todo.summary}
         details={todo.details}
         on:deleteTodo={deleteTodo}
+        on:updateTodo={updateTodo}
       />
     </div>
   {/each}
