@@ -194,7 +194,7 @@ section {
       outline-width: 0.5rem;
       box-shadow: 0 0 24px 12px rgba(0, 0, 0, 0.5);
       min-width: 20em;
-      max-width: 30em;
+      max-width: 25em;
       width: 50%;
 
       h1 {

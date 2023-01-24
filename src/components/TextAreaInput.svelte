@@ -31,12 +31,13 @@ textarea {
   padding-bottom: 0.2em;
   padding-left: 0.4em;
   padding-right: 0.4em;
+  border-radius: 0.2rem;
 
 
   &:focus {
     border-color: transparent;
     outline-style: solid;
-    outline-color: $background-accent-color;
+    outline-color: $accent-color;
     outline-width: 2px;
   }
 }

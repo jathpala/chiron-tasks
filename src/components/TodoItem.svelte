@@ -80,7 +80,6 @@
     <TextInput
       bind:value={summary}
       fontSize="1.2rem"
-      minWidth="30rem"
       placeholder="Task..."
     />
   </span>
@@ -88,7 +87,6 @@
     <TextAreaInput
       bind:value={details}
       fontSize="1rem"
-      minWidth="30rem"
       placeholder="Details..."
     />
   </span>
@@ -115,14 +113,15 @@
 @use "$styles/variables" as *;
 
 div.todo {
-  display: inline-grid;
+  display: grid;
   grid-template-areas:
-    "name dob mrn ."
-    "summary summary summary summary"
-    "details details details details"
-    "controls controls controls controls";
+    "name name name"
+    "mrn dob ."
+    "summary summary summary"
+    "details details details"
+    "controls controls controls";
   grid-template-columns:
-    max-content max-content max-content 1fr;
+    auto max-content 1fr;
   column-gap: 0.5rem;
   row-gap: 1rem;
   justify-content: stretch;
@@ -130,7 +129,7 @@ div.todo {
   border-style: solid;
   border-width: 1px;
   border-color: $accent-color;
-  width: fit-content;
+  width: 100%;
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
   padding-left: 2rem;
@@ -145,6 +144,7 @@ div.todo {
     color: $accent-color;
 
     &.name {
+      display: block;
       grid-area: name;
     }
 
@@ -162,20 +162,23 @@ div.todo {
 
     &.mrn {
       grid-area: mrn;
-      &:before {
-        content: "[";
-      }
 
-      &:after {
-        content: "]";
-      }
+      // &:before {
+      //   content: "[";
+      // }
+
+      // &:after {
+      //   content: "]";
+      // }
     }
 
     &.summary {
+      display: block;
       grid-area: summary;
     }
 
     &.details {
+      display: block;
       grid-area: details;
     }
 
@@ -213,5 +216,22 @@ div.todo {
     border-width: 2px;
     border-style: dashed;
   }
+}
+
+@media screen and (min-width: 768px) {
+  div.todo {
+    grid-template-areas:
+      "name dob mrn ."
+      "summary summary summary summary"
+      "details details details details"
+      "controls controls controls controls";
+    grid-template-columns:
+      auto max-content auto 1fr;
+    width: calc(768px - 2rem);
+  }
+}
+
+@media screen and (min-width: 1024px) {
+
 }
 </style>

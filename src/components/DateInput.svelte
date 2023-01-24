@@ -189,15 +189,11 @@ div.wrapper {
   }
 
   &:focus-within {
-    outline-style: solid;
-    outline-width: 2px;
-    outline-color: $background-accent-color;
 
     input:focus {
       outline: none;
       border-bottom-width: 2px;
       margin-bottom: -1px;
-
     }
   }
 }

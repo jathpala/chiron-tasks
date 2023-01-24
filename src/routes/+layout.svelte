@@ -6,4 +6,16 @@
   <title>Chiron Tasks</title>
 </svelte:head>
 
-<slot />
+<div>
+  <slot />
+</div>
+
+<style lang="scss">
+@use "$styles/variables" as *;
+
+div {
+  min-width: 360px;
+}
+
+
+</style>

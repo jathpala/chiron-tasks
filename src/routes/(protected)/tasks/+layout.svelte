@@ -176,7 +176,7 @@ nav {
     align-items: stretch;
 
     a {
-      color: $nav-color;
+      color: $accent-color;
       text-underline-offset: 0.2em;
     }
   }

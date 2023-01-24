@@ -6,6 +6,7 @@
   import { collection, doc, query, getDoc, getDocs, addDoc, deleteDoc, where } from "firebase/firestore"
 
   import TodoItem from "$components/TodoItem.svelte"
+  import TextInput from "$components/TextInput.svelte"
   import { db } from "$lib/firebase"
   import { user } from "$stores/user"
 
@@ -62,7 +63,7 @@
     <TodoItem on:addTodo={addTodo} />
   {/key}
   {#each todos as todo (todo.id)}
-    <div transition:fade={{duration: 500}} animate:flip={{duration: 500}}>
+    <div transition:fade={{duration: 300}} animate:flip={{duration: 300}}>
       <TodoItem
         ref={todo.id}
         name={todo.name}
@@ -76,6 +77,7 @@
   {/each}
 </main>
 
+
 <style lang="scss">
 @use "$styles/variables" as *;
 
@@ -83,6 +85,13 @@ main {
   display: flex;
   flex-direction: column;
   row-gap: 2rem;
+  align-items: center;
+}
+
+div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 </style>
