@@ -1,5 +1,4 @@
 Add multiple locations
-Allow changing password
 Email verify new signups
 Allow password resets
 Pre-specify users allowed to create accounts - ?cloud function

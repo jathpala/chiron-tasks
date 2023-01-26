@@ -1,17 +1,28 @@
-<span></span>
+<script>
+  export let show
+</script>
+
+<span class:show></span>
 
 <style lang="scss">
 @use "$styles/variables" as *;
 
 span {
-  width: 48px;
-  height: 48px;
-  border: 5px solid #FFF;
-  border-bottom-color: #FF3D00;
+  width: 0.8em;
+  height: 0.8em;
+  border-width: 5px;
+  border-style: solid;
   border-radius: 50%;
+  border-color: transparent;
+  border-bottom-color: transparent;
   display: inline-block;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
+
+  &.show {
+    border-color: $background-color;
+    border-bottom-color: $accent-color;
+  }
 }
 
 @keyframes rotation {

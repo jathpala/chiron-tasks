@@ -28,7 +28,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
   let email
   let password
-  let error
+  let error = null
 
   let loading = false
 
