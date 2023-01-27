@@ -38,13 +38,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 <script>
   import { createEventDispatcher } from "svelte"
 
-  import { serverTimestamp } from "firebase/firestore"
-
   import TextInput from "$components/TextInput.svelte"
   import DateInput from "$components/DateInput.svelte"
   import TextAreaInput from "$components/TextAreaInput.svelte"
-
-  import { user } from "$stores/user"
+  import CheckboxInput from "$components/CheckboxInput.svelte"
 
   export let ref = null
 
@@ -53,6 +50,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   export let mrn = ""
   export let summary = ""
   export let details = ""
+  export let isComplete = false
 
   let todo
   let error = null
@@ -81,8 +79,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
       dob: dob,
       summary: summary,
       details: details,
-      user: $user.firebase.uid,
-      createdAt: serverTimestamp()
     })
     name = ""
     dob = {}
@@ -121,9 +117,16 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   async function deleteTodo() {
     dispatch("deleteTodo", ref)
   }
+
+  async function toogleCompletion() {
+    dispatch("toggleCompletion", {
+      ref: ref,
+      isComplete: isComplete
+    })
+  }
 </script>
 
-<div class="todo" class:new={!ref} bind:this={todo}>
+<div class="todo" class:new={!ref} bind:this={todo} class:complete={isComplete}>
   {#if error}
     <div class="flash">{error}</div>
   {/if}
@@ -143,6 +146,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
         placeholder="MRN: &#65343;&#65343;&#65343;&#65343;"
       />
     </span>
+    {#if ref}
+      <span class="status">
+        <CheckboxInput bind:checked={isComplete} on:change={toogleCompletion}/>
+      </span>
+    {/if}
     <span class="summary">
       <TextInput
         bind:value={summary}
@@ -194,12 +202,12 @@ div.todo {
   div.grid {
     display: grid;
     grid-template-areas:
-      "error error error"
-      "name name name"
-      "mrn dob ."
-      "summary summary summary"
-      "details details details"
-      "controls controls controls";
+      "error error error error"
+      "name name name status"
+      "mrn dob . ."
+      "summary summary summary summary"
+      "details details details details"
+      "controls controls controls controls";
     grid-template-columns:
       auto max-content 1fr;
     column-gap: 0.5rem;
@@ -233,6 +241,20 @@ div.todo {
 
       &.mrn {
         grid-area: mrn;
+      }
+
+      &.status {
+        grid-area: status;
+        justify-content: flex-end;
+
+        input[type="checkbox"] {
+          // appearance: none;
+          border-color: $accent-color;
+          border-style: solid;
+          border-width: 2px;
+          height: 1rem;
+          width: 1rem;
+        }
       }
 
       &.summary {
@@ -287,6 +309,10 @@ div.todo {
     color: $error-color;
     margin-bottom: 0.5rem;
   }
+
+  &.complete {
+    border-style: dotted;
+  }
 }
 
 @media screen and (min-width: 768px) {
@@ -295,10 +321,10 @@ div.todo {
 
     div.grid {
       grid-template-areas:
-        "name dob mrn ."
-        "summary summary summary summary"
-        "details details details details"
-        "controls controls controls controls";
+        "name dob mrn . status"
+        "summary summary summary summary summary"
+        "details details details details details"
+        "controls controls controls controls controls";
       grid-template-columns:
         auto max-content auto 1fr;
 

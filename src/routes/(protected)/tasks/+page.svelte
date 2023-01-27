@@ -25,8 +25,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   import { flip } from "svelte/animate"
   import { fade } from "svelte/transition"
 
-  import { collection, doc, query, getDoc, getDocs, addDoc, updateDoc, deleteDoc, where } from "firebase/firestore"
-
+  import { collection, doc, query, getDoc, getDocs, addDoc, updateDoc,
+           deleteDoc, where, orderBy, serverTimestamp } from "firebase/firestore"
   import TodoItem from "$components/TodoItem.svelte"
   import { db } from "$lib/firebase"
   import { user } from "$stores/user"
@@ -36,7 +36,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
   async function readAll() {
     try {
-      const q = query(collection(db, "tasks"), where("user", "==", $user.firebase.uid))
+      const q = query(
+        collection(db, "tasks"),
+        where("user", "==", $user.firebase.uid),
+        orderBy("modifiedAt", "desc"),
+      )
       const querySnapshot = await getDocs(q)
       querySnapshot.forEach((d) => {
         let todo = d.data()
@@ -51,6 +55,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
   async function addTodo(event) {
     try {
+      event.detail.user = $user.firebase.uid
+      event.detail.isComplete = false
+      event.detail.createdAt = serverTimestamp()
+      event.detail.modifiedAt = serverTimestamp()
       const docRef = await addDoc(collection(db, "tasks"), event.detail)
       console.log("Document written with ID: ", docRef.id)
       const d = await getDoc(doc(db, "tasks", docRef.id))
@@ -64,12 +72,31 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
     }
   }
 
-  async function updateTodo(event) {
+  async function completeTodo(event) {
     const ref = event.detail.ref
     delete event.detail.ref
+    event.detail.status = "complete"
+    event.detail.modifiedAt = serverTimestamp()
     try {
       await updateDoc(doc(db, "tasks", ref), event.detail)
       const index = todos.findIndex((todo) => todo.id == ref)
+      todos[index] = event.detail
+      todos[index].id = ref
+      todos = todos
+
+      console.log("Document updated with ID: ", ref)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  async function updateTodo(event) {
+    const ref = event.detail.ref
+    delete event.detail.ref
+    event.detail.modifiedAt = serverTimestamp()
+    try {
+      await updateDoc(doc(db, "tasks", ref), event.detail)
+      const index = todos.findIndex((todo) => todo.id === ref)
       todos[index] = event.detail
       todos[index].id = ref
       todos = todos
@@ -87,6 +114,20 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
       todos = todos.filter((todo) => todo.id != event.detail)
     } catch (err) {
       console.error(err)
+    }
+  }
+
+  async function toggleCompletion(event) {
+    console.log("Completing..")
+    try {
+      await updateDoc(doc(db, "tasks", event.detail.ref), {
+        isComplete: event.detail.isComplete
+      })
+      const index = todos.findIndex((todo) => todo.id === event.detail.ref)
+      todos[index].isComplete = event.detail.isComplete
+      todos = todos
+    } catch (err) {
+      console.log(err)
     }
   }
 
@@ -108,8 +149,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
         dob={todo.dob}
         summary={todo.summary}
         details={todo.details}
+        isComplete={todo.isComplete}
         on:deleteTodo={deleteTodo}
         on:updateTodo={updateTodo}
+        on:toggleCompletion={toggleCompletion}
       />
     </div>
   {/each}
