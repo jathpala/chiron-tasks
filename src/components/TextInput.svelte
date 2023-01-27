@@ -103,6 +103,7 @@ label {
     grid-row-start: 1;
     grid-column-start: 1;
     font: inherit;
+    color: $primary-color;
   }
 
   input.center {

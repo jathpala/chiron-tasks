@@ -189,6 +189,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 @use "$styles/variables" as *;
 
 div.todo {
+  color: $primary-color;
   border-style: solid;
   border-width: 1px;
   border-color: $accent-color;
@@ -246,15 +247,6 @@ div.todo {
       &.status {
         grid-area: status;
         justify-content: flex-end;
-
-        input[type="checkbox"] {
-          // appearance: none;
-          border-color: $accent-color;
-          border-style: solid;
-          border-width: 2px;
-          height: 1rem;
-          width: 1rem;
-        }
       }
 
       &.summary {

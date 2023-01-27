@@ -204,6 +204,7 @@ div.wrapper {
       font: inherit;
       appearance: textfield;
       text-align: center;
+      color: $primary-color;
     }
 
     &::after {
